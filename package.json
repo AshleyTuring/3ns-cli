@@ -1,0 +1,47 @@
+{
+  "name": "@3ns/cli",
+  "version": "0.1.0",
+  "description": "Control your 3NS agent domain from the command line",
+  "main": "dist/index.js",
+  "bin": {
+    "3ns": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "3ns",
+    "agent",
+    "domain",
+    "cli",
+    "openclaw",
+    "a2a",
+    "lobehub"
+  ],
+  "author": "3NS Domains <hello@3ns.domains>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AshleyTuring/3ns-cli.git"
+  },
+  "homepage": "https://3ns.domains",
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "dist",
+    "SKILL.md",
+    "README.md"
+  ],
+  "dependencies": {
+    "commander": "^13.1.0",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0"
+  }
+}
