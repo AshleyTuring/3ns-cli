@@ -1,5 +1,7 @@
 import { Command } from "commander";
 import { api, printJson, printTable } from "../apiClient";
+import * as fs from "fs";
+import * as path from "path";
 
 export function registerSkinsCommands(program: Command): void {
   const skins = program.command("skins").description("Manage your agent website skin");
@@ -67,6 +69,41 @@ export function registerSkinsCommands(program: Command): void {
 
       await api("PUT", "/skins", body);
       console.log("Skin updated.");
+    });
+
+  skins
+    .command("upload-bg <filePath>")
+    .description("Upload a background image for your skin")
+    .option("--target <target>", "Which background to set: 'both' or 'desktop'", "both")
+    .action(async (filePath: string, opts: { target?: string }) => {
+      const resolved = path.resolve(filePath);
+      if (!fs.existsSync(resolved)) {
+        console.error(`File not found: ${resolved}`);
+        return;
+      }
+
+      const ext = path.extname(resolved).toLowerCase();
+      const mimeMap: Record<string, string> = {
+        ".jpg": "image/jpeg", ".jpeg": "image/jpeg",
+        ".png": "image/png", ".gif": "image/gif",
+        ".webp": "image/webp",
+      };
+
+      if (!mimeMap[ext]) {
+        console.error(`Unsupported image format: ${ext}. Use jpg, png, gif, or webp.`);
+        return;
+      }
+
+      const base64Content = fs.readFileSync(resolved).toString("base64");
+      const { data } = await api("POST", "/skins/upload", {
+        base64Content,
+        fileName: path.basename(resolved),
+        contentType: mimeMap[ext],
+        target: opts.target === "desktop" ? "desktop" : undefined,
+      });
+
+      console.log(`Background uploaded: ${data.imageUrl}`);
+      console.log(`Updated fields: ${data.updatedFields?.join(", ")}`);
     });
 
   skins
