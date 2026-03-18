@@ -32,6 +32,9 @@ export function registerLinksCommands(program: Command): void {
     .option("--title <title>", "Link title")
     .option("--description <desc>", "Link description")
     .option("--icon <icon>", "Icon URL or emoji")
+    .option("--platform <platform>", "Platform key (e.g. instagram, youtube, custom)", "custom")
+    .option("--username <username>", "Username for platform links")
+    .option("--active <bool>", "Whether link is visible", "true")
     .option("--order <n>", "Display order", parseInt)
     .action(async (opts) => {
       const { data } = await api("POST", "/links", {
@@ -39,6 +42,9 @@ export function registerLinksCommands(program: Command): void {
         title: opts.title,
         description: opts.description,
         icon: opts.icon,
+        platform: opts.platform,
+        username: opts.username,
+        isActive: opts.active !== "false",
         order: opts.order,
       });
       console.log(`Link added: ${data.linkId}`);
@@ -52,6 +58,9 @@ export function registerLinksCommands(program: Command): void {
     .option("--title <title>", "New title")
     .option("--description <desc>", "New description")
     .option("--icon <icon>", "New icon")
+    .option("--platform <platform>", "Platform key")
+    .option("--username <username>", "Username for platform")
+    .option("--active <bool>", "Toggle visibility (true/false)")
     .option("--order <n>", "New order", parseInt)
     .action(async (linkId: string, opts) => {
       const body: any = {};
@@ -59,6 +68,9 @@ export function registerLinksCommands(program: Command): void {
       if (opts.title) body.title = opts.title;
       if (opts.description) body.description = opts.description;
       if (opts.icon) body.icon = opts.icon;
+      if (opts.platform) body.platform = opts.platform;
+      if (opts.username) body.username = opts.username;
+      if (opts.active !== undefined) body.isActive = opts.active === "true";
       if (opts.order !== undefined) body.order = opts.order;
 
       await api("PUT", `/links/${linkId}`, body);
