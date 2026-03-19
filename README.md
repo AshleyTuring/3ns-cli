@@ -1,6 +1,6 @@
 # 3NS CLI
 
-Control your [3NS](https://3ns.domains) agent domain from the command line. Manage your Linktree-style links, agent configuration (MD instruction files), chat history, files, website skins, and discover other agents - all from your terminal or AI assistant.
+Control your [3NS](https://3ns.domains) agent domain from the command line. Manage your profile, links, AI model, website skin, agent configuration (MD instruction files), chat history, files, and discover other agents -- all from your terminal or AI assistant.
 
 ## Installation
 
@@ -18,7 +18,7 @@ npx @3ns/cli --help
 
 ### 1. Get your API key
 
-Sign in at [3ns.domains](https://3ns.domains), open the Export menu, select "Export to OpenClaw", and click "Generate API Key".
+Sign in at [3ns.domains](https://3ns.domains), open the Export menu, select "Export to OpenClaw", and click "Generate API Key". Each user gets their own key, scoped to their data only.
 
 ### 2. Authenticate
 
@@ -31,6 +31,14 @@ Sign in at [3ns.domains](https://3ns.domains), open the Export menu, select "Exp
 ```bash
 3ns auth whoami
 ```
+
+## Security Model
+
+- **Per-user API keys** are SHA-256 hashed before storage. Your plaintext key is shown once at generation time.
+- Your key can only access **your own** spaces, links, documents, chats, files, and skins.
+- **CRM endpoints** (users, events, reports, campaigns) require an **admin key** and return 403 for per-user keys.
+- **Upload limits:** Max 10 MB per file. Skin background uploads accept images only (jpeg, png, gif, webp, svg+xml).
+- Filenames are sanitized automatically.
 
 ## Commands
 
@@ -48,14 +56,16 @@ Manage the Linktree-style links on your 3NS website.
 
 ```bash
 3ns links list
-3ns links add --url https://example.com --title "My Site"
-3ns links update LINK_ID --title "Updated Title"
+3ns links add --url https://example.com --title "My Site" --platform twitter --username myhandle
+3ns links update LINK_ID --title "Updated Title" --active false
 3ns links remove LINK_ID
 ```
 
+Options: `--url`, `--title`, `--platform`, `--username`, `--active` (true/false), `--order`.
+
 ### `3ns config`
 
-Manage agent configuration - the MD instruction files that control your agent's behaviour.
+Manage agent configuration -- the MD instruction files that control your agent's behaviour.
 
 ```bash
 3ns config folders
@@ -88,7 +98,7 @@ Browse and manage your chat history.
 
 ### `3ns files`
 
-Upload, download, and manage files attached to your agent.
+Upload, download, and manage files attached to your agent (max 10 MB).
 
 ```bash
 3ns files list
@@ -99,13 +109,18 @@ Upload, download, and manage files attached to your agent.
 
 ### `3ns skins`
 
-Customise your agent website's appearance.
+Customise your agent website's appearance (17 color/style fields).
 
 ```bash
 3ns skins get
-3ns skins update --theme "midnight" --bg-color "#0a0a0a"
+3ns skins update --theme "midnight" --bg-color "#0a0a0a" --font-color "#ffffff"
+3ns skins upload-bg ./background.jpg --target both
 3ns skins presets
 ```
+
+Options for `update`: `--theme`, `--bg-color`, `--font-color`, `--button-color`, `--button-font-color`, `--hover-color`, `--font-family`, `--chat-bubble-color`, `--user-bubble-color`, `--chat-bubble-font`, `--user-bubble-font`, `--btn-border`, `--btn-bg`.
+
+Options for `upload-bg`: `--target` (`both` or `desktop`). Accepts jpg, png, gif, webp. Max 10 MB.
 
 ### `3ns export` / `3ns import`
 
@@ -119,7 +134,7 @@ Backup and restore your entire agent.
 
 ### `3ns openclaw`
 
-Access CRM features and get your AI setup prompt.
+Access CRM features (admin key only) and get your AI setup prompt.
 
 ```bash
 3ns openclaw setup-prompt
@@ -127,6 +142,8 @@ Access CRM features and get your AI setup prompt.
 3ns openclaw users --stage active --limit 10
 3ns openclaw report --range 7
 ```
+
+Note: `users` and `report` commands require an admin API key.
 
 ## JSON Output
 
@@ -147,6 +164,25 @@ Credentials are stored in `~/.3nsrc` with restricted permissions (0600).
   "baseUrl": "https://custom-endpoint.example.com"
 }
 ```
+
+## API Coverage
+
+The CLI provides full parity with the 3NS dashboard:
+
+| Feature | CLI Command | API Endpoint |
+|---------|-------------|--------------|
+| Profile | via `setup-prompt` | `GET/PUT /openclaw/profile` |
+| Default Model | -- | `GET/PUT /openclaw/model` |
+| Passcode | -- | `GET/PUT /openclaw/passcode` |
+| Links | `3ns links` | `GET/POST/PUT/DELETE /openclaw/links` |
+| Config/Docs | `3ns config` | `/openclaw/config/folders`, `/openclaw/config/documents` |
+| Chats | `3ns chats` | `GET/POST/PUT/DELETE /openclaw/chats` |
+| Files | `3ns files` | `GET/POST/DELETE /openclaw/files` |
+| Skins | `3ns skins` | `GET/PUT/POST /openclaw/skins` |
+| Agents | `3ns agents` | `GET/POST /openclaw/agents` |
+| Export/Import | `3ns export/import` | `POST /openclaw/export`, `POST /openclaw/import` |
+| Payment settings | -- | `PUT /openclaw/profile` (payment fields) |
+| CRM (admin) | `3ns openclaw` | `/openclaw/users`, `/openclaw/events`, etc. |
 
 ## For AI Agents
 
