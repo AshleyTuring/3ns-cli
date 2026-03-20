@@ -1,8 +1,8 @@
-# 3NS Domains - Agent Domain CLI
+# 3NS Agent Domain CLI -- AI Skill
 
-> Control your 3NS agent domain from the command line. Manage links, agent config, chats, files, skins, and discover other agents.
+> This skill allows an AI agent to control a 3NS agent domain. Use the 3NS CLI to manage links, website appearance, agent instruction files, chat history, files, agent discovery, and full backup/restore.
 
-## Quick Install
+## Quick Setup
 
 ```bash
 npx @3ns/cli auth login YOUR_API_KEY
@@ -18,70 +18,129 @@ npm install -g @3ns/cli
 ## Get Your API Key
 
 1. Go to https://3ns.domains and sign in
-2. Open the Export menu and select "Export to OpenClaw"
+2. Open the Export menu > "Export to OpenClaw"
 3. Click "Generate API Key"
-4. Copy the key and use it with `3ns auth login`
+4. Copy and use with `3ns auth login`
 
-## Available Commands
+## Authentication
 
-### Authentication
-- `3ns auth login <key>` - Store your API key
-- `3ns auth whoami` - Check your identity
-- `3ns auth logout` - Remove credentials
+```bash
+3ns auth login <key>                # Store API key
+3ns auth login <key> --base-url URL # Custom API endpoint
+3ns auth whoami                     # Check identity
+3ns auth logout                     # Remove credentials
+```
 
-### Links (Linktree-style site)
-- `3ns links list` - List all links
-- `3ns links add --url https://example.com --title "My Link"` - Add a link
-- `3ns links update <id> --title "New Title"` - Update a link
-- `3ns links remove <id>` - Remove a link
+## Links (Linktree-Style Page)
 
-### Agent Config (instruction files)
-- `3ns config folders` - List folders
-- `3ns config read <doc-id>` - Read a document
-- `3ns config write <doc-id> --file ./instructions.md` - Update from local file
-- `3ns config ensure <folder-id> --name capabilities.md --content "# My Agent"` - Create if missing
+```bash
+3ns links list [--json]
+3ns links add --url URL --title "Title" [--platform twitter] [--username handle] [--icon URL] [--description "text"] [--order N] [--active true|false]
+3ns links update LINK_ID [--url URL] [--title "New"] [--order N] [--active false]
+3ns links remove LINK_ID
+```
 
-### Agent Discovery
-- `3ns agents search "cooking"` - Search for agents
-- `3ns agents card <space-id>` - View an agent's capability card
-- `3ns agents chat <space-id> "Hello!"` - Send an A2A message
+Platforms: `twitter`, `instagram`, `youtube`, `github`, `linkedin`, `tiktok`, `custom`.
 
-### Chat History
-- `3ns chats list` - List conversations
-- `3ns chats history <id>` - View messages
-- `3ns chats send --folder <id> "Hello"` - Send a message
+## Website Skins
 
-### Files
-- `3ns files list` - List files
-- `3ns files upload ./doc.pdf --folder <id>` - Upload a file
-- `3ns files download <id> -o ./local.pdf` - Download a file
+```bash
+3ns skins get [--json]
+3ns skins update [options]
+3ns skins upload-bg FILE [--target both|desktop]
+3ns skins presets [--json]
+```
 
-### Skins
-- `3ns skins get` - View current skin
-- `3ns skins update --theme "dark" --bg-color "#1a1a1a"` - Update skin
-- `3ns skins presets` - Browse presets
+**Update options:** `--theme`, `--bg-color`, `--bg-image`, `--bg-image-desktop`, `--video`, `--font-color`, `--font-family`, `--button-color`, `--button-font-color`, `--button-border`, `--button-bg`, `--hover-color`, `--chat-bubble-color`, `--user-bubble-color`, `--chat-bubble-font`, `--user-bubble-font`.
 
-### Export / Import
-- `3ns export -o backup.json` - Export your agent
-- `3ns import backup.json` - Import from backup
+Upload accepts: jpg, png, gif, webp (max 10 MB).
 
-### Setup Prompt
-- `3ns openclaw setup-prompt` - Get your personalised AI setup prompt
-- `3ns openclaw setup-prompt --raw` - Raw prompt text only
+## Agent Config (Instruction Files)
+
+These Markdown files define your agent's personality, knowledge, capabilities, and rules.
+
+```bash
+3ns config folders [--json]
+3ns config read DOC_ID [--json]
+3ns config write DOC_ID --file ./instructions.md
+3ns config write DOC_ID --content "# New content"
+3ns config ensure FOLDER_ID --name capabilities.md --content "# Skills"
+3ns config ensure FOLDER_ID --name personality.md --file ./personality.md
+```
+
+## Chat History
+
+```bash
+3ns chats list [--json]
+3ns chats history CHAT_ID [--json]
+3ns chats send --folder FOLDER_ID "message" [--agent-type NORM|AMPS|CUST]
+3ns chats delete CHAT_ID
+```
+
+## File Management
+
+```bash
+3ns files list [--json]
+3ns files upload FILE --folder FOLDER_ID [--name "custom-name.pdf"] [--type mime/type]
+3ns files download FILE_ID -o ./local-file.pdf
+3ns files delete FILE_ID
+```
+
+Max upload: 10 MB. Filenames are sanitized automatically.
+
+## Agent Discovery & A2A Communication
+
+```bash
+3ns agents search "query" [--json]
+3ns agents card SPACE_ID [--json]
+3ns agents chat SPACE_ID "message"
+3ns agents list [--json]
+```
+
+## Export / Import (Full Backup)
+
+```bash
+3ns export -o backup.json
+3ns export --no-chats -o config-only.json
+3ns export --no-files -o lightweight.json
+3ns import backup.json
+```
+
+## Setup Prompt & Admin
+
+```bash
+3ns openclaw setup-prompt           # Formatted output
+3ns openclaw setup-prompt --raw     # Raw text for piping to clipboard
+3ns openclaw users --stage active   # CRM (admin key only)
+3ns openclaw report --range 7       # CRM (admin key only)
+```
+
+## JSON Output
+
+All list commands support `--json` for machine-readable output:
+
+```bash
+3ns links list --json
+3ns agents search "finance" --json
+3ns skins get --json
+```
 
 ## API Base URL
 
-Default: `https://us-central1-web3ns-e4199.cloudfunctions.net/openclaw/openclaw`
+Default: `https://us-central1-nsdomains-23edb.cloudfunctions.net/openclaw/openclaw`
 
-Override with: `3ns auth login <key> --base-url https://your-custom-url`
+Override: `3ns auth login <key> --base-url URL` or set `THREENS_API_URL` env var.
 
-## Requirements
+## Security
 
-- Node.js 18+
-- A 3NS account with a domain at https://3ns.domains
+- Per-user API keys are SHA-256 hashed. Plaintext shown once only.
+- User isolation: your key can only access your data.
+- Folder ownership is verified on all document and file operations.
+- Uploads are capped at 10 MB, image types validated, filenames sanitized.
+- CRM endpoints require admin key (403 for user keys).
 
 ## Links
 
 - Website: https://3ns.domains
-- Documentation: https://3ns.domains/faq
+- FAQ: https://3ns.domains/faq
 - GitHub: https://github.com/AshleyTuring/3ns-cli
