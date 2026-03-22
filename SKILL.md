@@ -117,13 +117,11 @@ Max upload: 10 MB. Filenames are sanitized automatically.
 3ns import backup.json
 ```
 
-## Setup Prompt & Admin
+## Setup Prompt
 
 ```bash
 3ns openclaw setup-prompt           # Formatted output
 3ns openclaw setup-prompt --raw     # Raw text for piping to clipboard
-3ns openclaw users --stage active   # CRM (admin key only)
-3ns openclaw report --range 7       # CRM (admin key only)
 ```
 
 ## JSON Output
@@ -148,7 +146,6 @@ Override: `3ns auth login <key> --base-url URL` or set `THREENS_API_URL` env var
 - User isolation: your key can only access your data.
 - Folder ownership is verified on all document and file operations.
 - Uploads are capped at 10 MB, image types validated, filenames sanitized.
-- CRM endpoints require admin key (403 for user keys).
 
 ## Links
 

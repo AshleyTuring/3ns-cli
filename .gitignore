@@ -2,3 +2,4 @@ node_modules/
 dist/
 *.js.map
 .3nsrc
+ADMIN.md

@@ -2,7 +2,7 @@ import { Command } from "commander";
 import { api, printJson } from "../apiClient";
 
 export function registerOpenclawCommands(program: Command): void {
-  const openclaw = program.command("openclaw").description("CRM passthrough and setup prompt");
+  const openclaw = program.command("openclaw").description("Setup prompt and platform utilities");
 
   openclaw
     .command("setup-prompt")

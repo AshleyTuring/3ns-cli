@@ -323,9 +323,9 @@ Back up your entire agent (config, chats, files) to a single JSON file, or resto
 
 ---
 
-### `3ns openclaw` -- Setup Prompt & Admin Tools
+### `3ns openclaw` -- Setup Prompt
 
-Get your personalised AI setup prompt, or access admin-only CRM features.
+Get your personalised AI setup prompt to connect any AI assistant to your 3NS agent.
 
 ```bash
 # Get your setup prompt (formatted)
@@ -336,14 +336,6 @@ Get your personalised AI setup prompt, or access admin-only CRM features.
 3ns openclaw setup-prompt --raw | pbcopy        # macOS
 3ns openclaw setup-prompt --raw | clip           # Windows
 3ns openclaw setup-prompt --raw | xclip -sel c   # Linux
-
-# CRM: list users (admin key only)
-3ns openclaw users --stage active --limit 10
-3ns openclaw users --stage active --json
-
-# CRM: daily report (admin key only)
-3ns openclaw report --date 2026-03-09
-3ns openclaw report --range 7
 ```
 
 ---
@@ -385,8 +377,6 @@ The CLI provides complete parity with the 3NS web dashboard. Everything you can 
 | Import                 | `3ns import`                | `/openclaw/import`           | POST                      |
 | Setup prompt           | `3ns openclaw setup-prompt` | `/openclaw/setup-prompt`     | GET                       |
 | Payment settings       | via API                     | `/openclaw/profile`          | PUT                       |
-| CRM users (admin)      | `3ns openclaw users`        | `/openclaw/users`            | GET                       |
-| CRM report (admin)     | `3ns openclaw report`       | `/openclaw/report/daily`     | GET                       |
 
 ---
 
@@ -396,7 +386,6 @@ The CLI provides complete parity with the 3NS web dashboard. Everything you can 
 - **User isolation** -- Your key can only access your own data. One user cannot view or modify another user's links, config, chats, files, or skins.
 - **Folder ownership** -- Document and file operations verify that the target folder belongs to you.
 - **Upload limits** -- Max 10 MB per file. Skin background uploads accept images only (jpeg, png, gif, webp). Filenames are sanitized automatically.
-- **Admin-only CRM** -- CRM endpoints (users, events, reports, campaigns) require an admin API key and return 403 for per-user keys.
 - **Secure storage** -- Credentials in `~/.3nsrc` are written with 0600 permissions (owner-only read/write).
 
 ---
