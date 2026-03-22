@@ -8,16 +8,16 @@ Designed for developers, power users, and AI assistants (OpenClaw, Cursor, LobeH
 
 ## What You Can Do
 
-| Feature | What it does |
-|---|---|
-| **Links** | Build a Linktree-style page with custom links, icons, labels, ordering, and visibility toggles |
-| **Website Skins** | Customise every colour, font, chat bubble style, and background image on your 3NS website |
-| **Agent Config** | Read, write, and create the Markdown instruction files that define your AI agent's personality, knowledge, and capabilities |
-| **Chat History** | Browse conversations, read full message threads, send new messages, and clean up old chats |
-| **Files** | Upload documents (PDF, images, anything up to 10 MB), download them, and manage your file library |
-| **Agent Discovery** | Search for other agents on the 3NS network, view their capability cards, and send them messages (A2A protocol) |
-| **Export / Import** | Full backup and restore of your entire agent -- config, chats, files, everything |
-| **Setup Prompt** | Generate a personalised AI instruction prompt you can paste into any LLM to connect it to your 3NS agent |
+| Feature             | What it does                                                                                                                |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| **Links**           | Build a Linktree-style page with custom links, icons, labels, ordering, and visibility toggles                              |
+| **Website Skins**   | Customise every colour, font, chat bubble style, and background image on your 3NS website                                   |
+| **Agent Config**    | Read, write, and create the Markdown instruction files that define your AI agent's personality, knowledge, and capabilities |
+| **Chat History**    | Browse conversations, read full message threads, send new messages, and clean up old chats                                  |
+| **Files**           | Upload documents (PDF, images, anything up to 10 MB), download them, and manage your file library                           |
+| **Agent Discovery** | Search for other agents on the 3NS network, view their capability cards, and send them messages (A2A protocol)              |
+| **Export / Import** | Full backup and restore of your entire agent -- config, chats, files, everything                                            |
+| **Setup Prompt**    | Generate a personalised AI instruction prompt you can paste into any LLM to connect it to your 3NS agent                    |
 
 ## Quick Start
 
@@ -94,16 +94,48 @@ Manage the links that appear on your 3NS website. Each link has a URL, title, de
 
 **All options for `add` and `update`:**
 
-| Option | Description | Example |
-|---|---|---|
-| `--url` | Link URL (required for add) | `https://youtube.com/@me` |
-| `--title` | Display title | `"My YouTube Channel"` |
-| `--description` | Short description | `"Weekly tech videos"` |
-| `--icon` | Icon URL or emoji | `"https://example.com/icon.png"` |
-| `--platform` | Platform key | `twitter`, `instagram`, `youtube`, `github`, `linkedin`, `tiktok`, `custom` |
-| `--username` | Username for the platform | `myhandle` |
-| `--order` | Display order (integer) | `1` |
-| `--active` | Visible on site | `true` or `false` |
+| Option          | Description                 | Example                                                                     |
+| --------------- | --------------------------- | --------------------------------------------------------------------------- |
+| `--url`         | Link URL (required for add) | `https://youtube.com/@me`                                                   |
+| `--title`       | Display title               | `"My YouTube Channel"`                                                      |
+| `--description` | Short description           | `"Weekly tech videos"`                                                      |
+| `--icon`        | Icon URL or emoji           | `"https://example.com/icon.png"`                                            |
+| `--platform`    | Platform key                | `twitter`, `instagram`, `youtube`, `github`, `linkedin`, `tiktok`, `custom` |
+| `--username`    | Username for the platform   | `myhandle`                                                                  |
+| `--order`       | Display order (integer)     | `1`                                                                         |
+| `--active`      | Visible on site             | `true` or `false`                                                           |
+
+---
+
+### `3ns models` -- Available AI Models
+
+List all AI models you can use with your agent. Filter by provider, or use `--json` for scripting.
+
+```bash
+# List all available models
+3ns models
+
+# Filter by provider
+3ns models --provider openai
+3ns models --provider google
+3ns models --provider anthropic
+3ns models --provider xai
+
+# JSON output for scripting
+3ns models --json
+```
+
+Output includes model name (for use with `--model`), display label, provider, and context window size.
+
+**Currently available (21 models):**
+
+| Provider | Models |
+|---|---|
+| Google (Vertex AI) | Gemini 2.0 Flash, 2.5 Flash, 2.5 Pro, 3 Flash, 3 Pro |
+| OpenAI | GPT-4o, GPT-4o Mini, GPT-4.1, GPT-4.1 Mini, GPT-5 Mini, GPT-5.1, GPT-5.2, O3 |
+| Anthropic | Claude 4.5 Haiku, Claude 4.5 Sonnet, Claude 4 Opus, Claude Sonnet 4.6, Claude Opus 4.6 |
+| xAI | Grok 4, Grok 4 Fast, Grok 4.1 Fast |
+| Self-hosted | Any Ollama model (configured separately via the dashboard) |
 
 ---
 
@@ -141,24 +173,24 @@ Full control over your 3NS website's visual design. Change colours, fonts, backg
 
 **All skin properties:**
 
-| Option | Description |
-|---|---|
-| `--theme` | Theme preset name |
-| `--bg-color` | Background colour (hex) |
-| `--bg-image` | Background image URL |
-| `--bg-image-desktop` | Desktop-only background image URL |
-| `--video` | Background video URL |
-| `--font-color` | Main text colour |
-| `--font-family` | Font family name |
-| `--button-color` | Button text colour |
-| `--button-font-color` | Button font colour |
-| `--button-border` | Button border colour |
-| `--button-bg` | Button background colour |
-| `--hover-color` | Hover state colour |
-| `--chat-bubble-color` | Agent chat bubble background |
-| `--user-bubble-color` | User chat bubble background |
-| `--chat-bubble-font` | Agent chat bubble text colour |
-| `--user-bubble-font` | User chat bubble text colour |
+| Option                | Description                       |
+| --------------------- | --------------------------------- |
+| `--theme`             | Theme preset name                 |
+| `--bg-color`          | Background colour (hex)           |
+| `--bg-image`          | Background image URL              |
+| `--bg-image-desktop`  | Desktop-only background image URL |
+| `--video`             | Background video URL              |
+| `--font-color`        | Main text colour                  |
+| `--font-family`       | Font family name                  |
+| `--button-color`      | Button text colour                |
+| `--button-font-color` | Button font colour                |
+| `--button-border`     | Button border colour              |
+| `--button-bg`         | Button background colour          |
+| `--hover-color`       | Hover state colour                |
+| `--chat-bubble-color` | Agent chat bubble background      |
+| `--user-bubble-color` | User chat bubble background       |
+| `--chat-bubble-font`  | Agent chat bubble text colour     |
+| `--user-bubble-font`  | User chat bubble text colour      |
 
 ---
 
@@ -187,6 +219,7 @@ Your agent's brain lives in Markdown files. These instruction files control your
 ```
 
 **What to put in instruction files:**
+
 - **Instructions** -- How your agent should behave, its tone, personality, and rules
 - **Knowledge** -- Facts, product information, company details your agent should know
 - **Capabilities** -- What your agent can do, tools it has access to
@@ -211,11 +244,17 @@ Browse and manage your agent's conversation history.
 3ns chats send --folder FOLDER_ID "What can you help me with?"
 3ns chats send --folder FOLDER_ID "Tell me about cooking" --agent-type NORM
 
+# Specify which AI model to use for this message
+3ns chats send --folder FOLDER_ID "Summarise this document" --model openai/gpt-5.2
+3ns chats send --folder FOLDER_ID "Write a poem" --model anthropic/claude-4-opus
+
 # Delete a chat and all its messages
 3ns chats delete CHAT_ID
 ```
 
 Agent types: `NORM` (standard), `AMPS` (amplified), `CUST` (custom).
+
+Use `--model` to override the default model for a single message. Run `3ns models` to see all valid model names. Ollama models are also supported with `ollamadynamic/MODEL_NAME`.
 
 ---
 
@@ -323,28 +362,29 @@ Every list command supports `--json` for machine-readable output, making the CLI
 
 The CLI provides complete parity with the 3NS web dashboard. Everything you can do on the website, you can do from the command line.
 
-| Feature | CLI Command | API Endpoint | Method |
-|---|---|---|---|
-| Profile & metadata | `3ns auth whoami` | `/openclaw/profile` | GET / PUT |
-| Default AI model | via API | `/openclaw/model` | GET / PUT |
-| Website passcode | via API | `/openclaw/passcode` | GET / PUT |
-| Links (CRUD) | `3ns links` | `/openclaw/links` | GET / POST / PUT / DELETE |
-| Website skin | `3ns skins` | `/openclaw/skins` | GET / PUT |
-| Skin background upload | `3ns skins upload-bg` | `/openclaw/skins/upload` | POST |
-| Skin presets | `3ns skins presets` | `/openclaw/skins/presets` | GET |
-| Config folders | `3ns config folders` | `/openclaw/config/folders` | GET |
-| Config documents | `3ns config read/write` | `/openclaw/config/documents` | GET / PUT / POST |
-| Chat conversations | `3ns chats` | `/openclaw/chats` | GET / POST / DELETE |
-| File management | `3ns files` | `/openclaw/files` | GET / POST / DELETE |
-| Agent search | `3ns agents search` | `/openclaw/agents/search` | GET |
-| Agent card | `3ns agents card` | `/openclaw/agents/:id/card` | GET |
-| A2A messaging | `3ns agents chat` | `/openclaw/agents/:id/chat` | POST |
-| Export | `3ns export` | `/openclaw/export` | POST |
-| Import | `3ns import` | `/openclaw/import` | POST |
-| Setup prompt | `3ns openclaw setup-prompt` | `/openclaw/setup-prompt` | GET |
-| Payment settings | via API | `/openclaw/profile` | PUT |
-| CRM users (admin) | `3ns openclaw users` | `/openclaw/users` | GET |
-| CRM report (admin) | `3ns openclaw report` | `/openclaw/report/daily` | GET |
+| Feature                | CLI Command                 | API Endpoint                 | Method                    |
+| ---------------------- | --------------------------- | ---------------------------- | ------------------------- |
+| Profile & metadata     | `3ns auth whoami`           | `/openclaw/profile`          | GET / PUT                 |
+| Default AI model       | via API                     | `/openclaw/model`            | GET / PUT                 |
+| Website passcode       | via API                     | `/openclaw/passcode`         | GET / PUT                 |
+| Links (CRUD)           | `3ns links`                 | `/openclaw/links`            | GET / POST / PUT / DELETE |
+| Website skin           | `3ns skins`                 | `/openclaw/skins`            | GET / PUT                 |
+| Skin background upload | `3ns skins upload-bg`       | `/openclaw/skins/upload`     | POST                      |
+| Skin presets           | `3ns skins presets`         | `/openclaw/skins/presets`    | GET                       |
+| Config folders         | `3ns config folders`        | `/openclaw/config/folders`   | GET                       |
+| Config documents       | `3ns config read/write`     | `/openclaw/config/documents` | GET / PUT / POST          |
+| Available AI models    | `3ns models`                | `/openclaw/models`           | GET                       |
+| Chat conversations     | `3ns chats`                 | `/openclaw/chats`            | GET / POST / DELETE       |
+| File management        | `3ns files`                 | `/openclaw/files`            | GET / POST / DELETE       |
+| Agent search           | `3ns agents search`         | `/openclaw/agents/search`    | GET                       |
+| Agent card             | `3ns agents card`           | `/openclaw/agents/:id/card`  | GET                       |
+| A2A messaging          | `3ns agents chat`           | `/openclaw/agents/:id/chat`  | POST                      |
+| Export                 | `3ns export`                | `/openclaw/export`           | POST                      |
+| Import                 | `3ns import`                | `/openclaw/import`           | POST                      |
+| Setup prompt           | `3ns openclaw setup-prompt` | `/openclaw/setup-prompt`     | GET                       |
+| Payment settings       | via API                     | `/openclaw/profile`          | PUT                       |
+| CRM users (admin)      | `3ns openclaw users`        | `/openclaw/users`            | GET                       |
+| CRM report (admin)     | `3ns openclaw report`       | `/openclaw/report/daily`     | GET                       |
 
 ---
 

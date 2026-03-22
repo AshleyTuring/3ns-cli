@@ -48,13 +48,17 @@ export function registerChatsCommands(program: Command): void {
     .requiredOption("--folder <id>", "Folder ID for the chat")
     .argument("<message>", "Message text")
     .option("--agent-type <type>", "Agent type (NORM, AMPS, CUST)", "NORM")
-    .action(async (message: string, opts: { folder: string; agentType: string }) => {
-      const { data } = await api("POST", "/chats", {
+    .option("--model <model>", "AI model to use (e.g. openai/gpt-5.2). Run '3ns models' to see options.")
+    .action(async (message: string, opts: { folder: string; agentType: string; model?: string }) => {
+      const body: any = {
         folderId: opts.folder,
         message,
         agentType: opts.agentType,
-      });
+      };
+      if (opts.model) body.model = opts.model;
+      const { data } = await api("POST", "/chats", body);
       console.log(`Message sent to chat ${data.chatId}`);
+      if (data.model) console.log(`Model: ${data.model}`);
       if (data.note) console.log(data.note);
     });
 

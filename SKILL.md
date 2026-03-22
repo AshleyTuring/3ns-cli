@@ -68,14 +68,25 @@ These Markdown files define your agent's personality, knowledge, capabilities, a
 3ns config ensure FOLDER_ID --name personality.md --file ./personality.md
 ```
 
+## Available AI Models
+
+```bash
+3ns models                          # List all 21 available models
+3ns models --provider openai        # Filter by provider (openai, google, anthropic, xai)
+3ns models --json                   # Machine-readable output
+```
+
 ## Chat History
 
 ```bash
 3ns chats list [--json]
 3ns chats history CHAT_ID [--json]
 3ns chats send --folder FOLDER_ID "message" [--agent-type NORM|AMPS|CUST]
+3ns chats send --folder FOLDER_ID "message" --model openai/gpt-5.2
 3ns chats delete CHAT_ID
 ```
+
+Use `--model` to override the default AI model for a single message. Run `3ns models` to see valid names. Ollama models: `ollamadynamic/MODEL_NAME`.
 
 ## File Management
 

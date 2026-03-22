@@ -10,6 +10,7 @@ import { registerFilesCommands } from "./commands/files";
 import { registerSkinsCommands } from "./commands/skins";
 import { registerExportImportCommands } from "./commands/exportImport";
 import { registerOpenclawCommands } from "./commands/openclaw";
+import { registerModelsCommands } from "./commands/models";
 
 const program = new Command();
 
@@ -27,5 +28,6 @@ registerFilesCommands(program);
 registerSkinsCommands(program);
 registerExportImportCommands(program);
 registerOpenclawCommands(program);
+registerModelsCommands(program);
 
 program.parse();
