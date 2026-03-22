@@ -182,7 +182,7 @@ Full control over your 3NS website's visual design. Change colours, fonts, backg
 | `--video`             | Background video URL              |
 | `--font-color`        | Main text colour                  |
 | `--font-family`       | Font family name                  |
-| `--button-color`      | Button text colour                |
+| `--button-color`      | Button colour                     |
 | `--button-font-color` | Button font colour                |
 | `--button-border`     | Button border colour              |
 | `--button-bg`         | Button background colour          |
@@ -270,6 +270,7 @@ Upload, download, and manage files attached to your agent (PDFs, images, documen
 # Upload a file to a specific folder
 3ns files upload ./report.pdf --folder FOLDER_ID
 3ns files upload ./photo.jpg --folder FOLDER_ID --name "team-photo.jpg"
+3ns files upload ./data.csv --folder FOLDER_ID --type "text/csv"
 
 # Download a file
 3ns files download FILE_ID -o ./downloaded-report.pdf
@@ -338,6 +339,7 @@ Get your personalised AI setup prompt, or access admin-only CRM features.
 
 # CRM: list users (admin key only)
 3ns openclaw users --stage active --limit 10
+3ns openclaw users --stage active --json
 
 # CRM: daily report (admin key only)
 3ns openclaw report --date 2026-03-09
@@ -364,7 +366,7 @@ The CLI provides complete parity with the 3NS web dashboard. Everything you can 
 
 | Feature                | CLI Command                 | API Endpoint                 | Method                    |
 | ---------------------- | --------------------------- | ---------------------------- | ------------------------- |
-| Profile & metadata     | `3ns auth whoami`           | `/openclaw/profile`          | GET / PUT                 |
+| Profile & metadata     | `3ns auth whoami` (GET)     | `/openclaw/profile`          | GET / PUT (PUT via API)   |
 | Default AI model       | via API                     | `/openclaw/model`            | GET / PUT                 |
 | Website passcode       | via API                     | `/openclaw/passcode`         | GET / PUT                 |
 | Links (CRUD)           | `3ns links`                 | `/openclaw/links`            | GET / POST / PUT / DELETE |
@@ -393,7 +395,7 @@ The CLI provides complete parity with the 3NS web dashboard. Everything you can 
 - **Per-user API keys** -- Your key is SHA-256 hashed before storage. The plaintext is shown once at generation time and cannot be retrieved.
 - **User isolation** -- Your key can only access your own data. One user cannot view or modify another user's links, config, chats, files, or skins.
 - **Folder ownership** -- Document and file operations verify that the target folder belongs to you.
-- **Upload limits** -- Max 10 MB per file. Skin background uploads accept images only (jpeg, png, gif, webp, svg+xml). Filenames are sanitized automatically.
+- **Upload limits** -- Max 10 MB per file. Skin background uploads accept images only (jpeg, png, gif, webp). Filenames are sanitized automatically.
 - **Admin-only CRM** -- CRM endpoints (users, events, reports, campaigns) require an admin API key and return 403 for per-user keys.
 - **Secure storage** -- Credentials in `~/.3nsrc` are written with 0600 permissions (owner-only read/write).
 
