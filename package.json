@@ -1,6 +1,6 @@
 {
   "name": "@3ns/cli",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Control your 3NS agent domain from the command line",
   "main": "dist/index.js",
   "bin": {

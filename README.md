@@ -399,7 +399,7 @@ Stored at `~/.3nsrc`:
 ```json
 {
   "apiKey": "your-api-key",
-  "baseUrl": "https://us-central1-nsdomains-23edb.cloudfunctions.net/openclaw/openclaw"
+  "baseUrl": "https://us-central1-prod3ns.cloudfunctions.net/openclaw/openclaw"
 }
 ```
 
@@ -412,10 +412,10 @@ Stored at `~/.3nsrc`:
 ### Environment variable override
 
 ```bash
-export THREENS_API_URL=https://us-central1-nsdomains-23edb.cloudfunctions.net/openclaw/openclaw
+export THREENS_API_URL=https://us-central1-prod3ns.cloudfunctions.net/openclaw/openclaw
 ```
 
-Default: `https://us-central1-nsdomains-23edb.cloudfunctions.net/openclaw/openclaw`
+Default: `https://us-central1-prod3ns.cloudfunctions.net/openclaw/openclaw`
 
 ---
 

@@ -5,7 +5,7 @@ import * as os from "os";
 const RC_PATH = path.join(os.homedir(), ".3nsrc");
 const DEFAULT_BASE_URL =
   process.env.THREENS_API_URL ||
-  "https://us-central1-nsdomains-23edb.cloudfunctions.net/openclaw/openclaw";
+  "https://us-central1-prod3ns.cloudfunctions.net/openclaw/openclaw";
 
 interface Config {
   apiKey: string;

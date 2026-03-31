@@ -136,7 +136,7 @@ All list commands support `--json` for machine-readable output:
 
 ## API Base URL
 
-Default: `https://us-central1-nsdomains-23edb.cloudfunctions.net/openclaw/openclaw`
+Default: `https://us-central1-prod3ns.cloudfunctions.net/openclaw/openclaw`
 
 Override: `3ns auth login <key> --base-url URL` or set `THREENS_API_URL` env var.
 
