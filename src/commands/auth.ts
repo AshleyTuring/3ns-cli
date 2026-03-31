@@ -13,7 +13,6 @@ export function registerAuthCommands(program: Command): void {
       saveConfig({ apiKey, baseUrl: opts.baseUrl });
       console.log("API key saved to ~/.3nsrc");
 
-      // Verify the key works
       try {
         const { data } = await api("GET", "/profile");
         const name = data?.profile?.metadata?.name || "Unknown";

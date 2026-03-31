@@ -227,11 +227,21 @@ Your agent's brain lives in Markdown files. These instruction files control your
 
 ---
 
-### `3ns chats` -- Chat History
+### `3ns chats` -- Chat with Your Agent
 
-Browse and manage your agent's conversation history.
+Send a message and get an AI response. The chat folder is auto-detected so you can just send a message.
 
 ```bash
+# Send a message and get an AI response
+3ns chats send "What can you help me with?"
+
+# Use a specific AI model for this message
+3ns chats send "Summarise this document" --model openai/gpt-5.2
+3ns chats send "Write a poem" --model anthropic/claude-4-opus
+
+# Continue an existing conversation
+3ns chats send "Tell me more about that" --chat-id 1743435000000
+
 # List all conversations (most recent first)
 3ns chats list
 3ns chats list --json
@@ -240,21 +250,15 @@ Browse and manage your agent's conversation history.
 3ns chats history CHAT_ID
 3ns chats history CHAT_ID --json
 
-# Send a message to start or continue a conversation
-3ns chats send --folder FOLDER_ID "What can you help me with?"
-3ns chats send --folder FOLDER_ID "Tell me about cooking" --agent-type NORM
-
-# Specify which AI model to use for this message
-3ns chats send --folder FOLDER_ID "Summarise this document" --model openai/gpt-5.2
-3ns chats send --folder FOLDER_ID "Write a poem" --model anthropic/claude-4-opus
-
 # Delete a chat and all its messages
 3ns chats delete CHAT_ID
 ```
 
-Agent types: `NORM` (standard), `AMPS` (amplified), `CUST` (custom).
-
 Use `--model` to override the default model for a single message. Run `3ns models` to see all valid model names. Ollama models are also supported with `ollamadynamic/MODEL_NAME`.
+
+**Sending images/files with a chat message (raw API):**
+1. Upload the file first: `3ns files upload ./photo.jpg --folder FOLDER_ID`
+2. Use the returned URL in the raw API: `POST /openclaw/chats` with `"attachments": [{"url": "FILE_URL", "mimeType": "image/jpeg"}]`
 
 ---
 
@@ -368,7 +372,7 @@ The CLI provides complete parity with the 3NS web dashboard. Everything you can 
 | Config folders         | `3ns config folders`        | `/openclaw/config/folders`   | GET                       |
 | Config documents       | `3ns config read/write`     | `/openclaw/config/documents` | GET / PUT / POST          |
 | Available AI models    | `3ns models`                | `/openclaw/models`           | GET                       |
-| Chat conversations     | `3ns chats`                 | `/openclaw/chats`            | GET / POST / DELETE       |
+| Chat (send + AI reply) | `3ns chats send`            | `/openclaw/chats`            | GET / POST / DELETE       |
 | File management        | `3ns files`                 | `/openclaw/files`            | GET / POST / DELETE       |
 | Agent search           | `3ns agents search`         | `/openclaw/agents/search`    | GET                       |
 | Agent card             | `3ns agents card`           | `/openclaw/agents/:id/card`  | GET                       |

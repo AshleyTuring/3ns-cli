@@ -44,22 +44,24 @@ export function registerChatsCommands(program: Command): void {
 
   chats
     .command("send")
-    .description("Send a message to start or continue a chat")
-    .requiredOption("--folder <id>", "Folder ID for the chat")
+    .description("Send a message and get an AI response")
     .argument("<message>", "Message text")
-    .option("--agent-type <type>", "Agent type (NORM, AMPS, CUST)", "NORM")
+    .option("--folder <id>", "Folder ID for the chat (auto-detected if omitted)")
+    .option("--chat-id <id>", "Existing chat ID to continue a conversation")
     .option("--model <model>", "AI model to use (e.g. openai/gpt-5.2). Run '3ns models' to see options.")
-    .action(async (message: string, opts: { folder: string; agentType: string; model?: string }) => {
-      const body: any = {
-        folderId: opts.folder,
-        message,
-        agentType: opts.agentType,
-      };
+    .action(async (message: string, opts: { folder?: string; chatId?: string; model?: string }) => {
+      const body: any = { message };
+      if (opts.folder) body.folderId = opts.folder;
+      if (opts.chatId) body.chatId = opts.chatId;
       if (opts.model) body.model = opts.model;
       const { data } = await api("POST", "/chats", body);
-      console.log(`Message sent to chat ${data.chatId}`);
+      if (data.response) {
+        console.log(`\n[Agent] ${data.response}\n`);
+        console.log(`Chat ID: ${data.chatId} (use --chat-id ${data.chatId} to continue)`);
+      } else {
+        console.log(`Message sent to chat ${data.chatId}`);
+      }
       if (data.model) console.log(`Model: ${data.model}`);
-      if (data.note) console.log(data.note);
     });
 
   chats

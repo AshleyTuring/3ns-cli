@@ -17,7 +17,7 @@ const program = new Command();
 program
   .name("3ns")
   .description("Control your 3NS agent domain from the command line")
-  .version("1.0.0");
+  .version("1.2.1");
 
 registerAuthCommands(program);
 registerLinksCommands(program);
