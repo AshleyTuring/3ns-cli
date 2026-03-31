@@ -242,6 +242,13 @@ Send a message and get an AI response. The chat folder is auto-detected so you c
 # Continue an existing conversation
 3ns chats send "Tell me more about that" --chat-id 1743435000000
 
+# Send with an image/file attachment (upload first, then pass the URL)
+3ns files upload ./photo.jpg --folder FOLDER_ID       # note the returned URL
+3ns chats send "What's in this image?" --attachment https://storage.googleapis.com/.../photo.jpg
+
+# Multiple attachments
+3ns chats send "Compare these" --attachment URL1 --attachment URL2
+
 # List all conversations (most recent first)
 3ns chats list
 3ns chats list --json
@@ -256,9 +263,7 @@ Send a message and get an AI response. The chat folder is auto-detected so you c
 
 Use `--model` to override the default model for a single message. Run `3ns models` to see all valid model names. Ollama models are also supported with `ollamadynamic/MODEL_NAME`.
 
-**Sending images/files with a chat message (raw API):**
-1. Upload the file first: `3ns files upload ./photo.jpg --folder FOLDER_ID`
-2. Use the returned URL in the raw API: `POST /openclaw/chats` with `"attachments": [{"url": "FILE_URL", "mimeType": "image/jpeg"}]`
+**Attachment workflow:** Upload the file first with `3ns files upload`, then pass the returned URL via `--attachment`. The MIME type is auto-detected from the file extension. Supported: jpg, png, gif, webp, svg, pdf, mp3, wav, mp4.
 
 ---
 

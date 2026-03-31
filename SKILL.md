@@ -82,6 +82,7 @@ These Markdown files define your agent's personality, knowledge, capabilities, a
 3ns chats send "message"                                     # Send message, get AI response (folder auto-detected)
 3ns chats send "message" --model openai/gpt-5.2              # Use a specific model
 3ns chats send "follow-up question" --chat-id CHAT_ID        # Continue an existing conversation
+3ns chats send "describe this" --attachment https://...       # Send with an image/file attachment
 3ns chats list [--json]                                      # List conversations
 3ns chats history CHAT_ID [--json]                           # View messages
 3ns chats delete CHAT_ID                                     # Delete a conversation
@@ -89,9 +90,10 @@ These Markdown files define your agent's personality, knowledge, capabilities, a
 
 Use `--model` to override the default AI model for a single message. Run `3ns models` to see valid names. Ollama models: `ollamadynamic/MODEL_NAME`.
 
-**Sending images/files with a chat message (raw API):**
-1. Upload the file first: `3ns files upload ./photo.jpg --folder FOLDER_ID`
-2. Use the returned URL in the raw API: `POST /openclaw/chats` with `"attachments": [{"url": "FILE_URL", "mimeType": "image/jpeg"}]`
+**Sending images/files with a chat message:**
+1. Upload the file first: `3ns files upload ./photo.jpg --folder FOLDER_ID` — note the returned URL.
+2. Pass the URL via `--attachment`: `3ns chats send "What's in this image?" --attachment FILE_URL`
+3. Multiple attachments: `3ns chats send "Compare these" --attachment URL1 --attachment URL2`
 
 ## File Management
 

@@ -49,11 +49,23 @@ export function registerChatsCommands(program: Command): void {
     .option("--folder <id>", "Folder ID for the chat (auto-detected if omitted)")
     .option("--chat-id <id>", "Existing chat ID to continue a conversation")
     .option("--model <model>", "AI model to use (e.g. openai/gpt-5.2). Run '3ns models' to see options.")
-    .action(async (message: string, opts: { folder?: string; chatId?: string; model?: string }) => {
+    .option("--attachment <url...>", "File URL(s) to attach (upload first via '3ns files upload')")
+    .action(async (message: string, opts: { folder?: string; chatId?: string; model?: string; attachment?: string[] }) => {
       const body: any = { message };
       if (opts.folder) body.folderId = opts.folder;
       if (opts.chatId) body.chatId = opts.chatId;
       if (opts.model) body.model = opts.model;
+      if (opts.attachment && opts.attachment.length > 0) {
+        body.attachments = opts.attachment.map((url) => {
+          const ext = url.split(".").pop()?.split("?")[0]?.toLowerCase() || "";
+          const mimeMap: Record<string, string> = {
+            png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", gif: "image/gif",
+            webp: "image/webp", svg: "image/svg+xml", pdf: "application/pdf",
+            mp3: "audio/mpeg", wav: "audio/wav", mp4: "video/mp4",
+          };
+          return { url, mimeType: mimeMap[ext] || "application/octet-stream" };
+        });
+      }
       const { data } = await api("POST", "/chats", body);
       if (data.response) {
         console.log(`\n[Agent] ${data.response}\n`);
